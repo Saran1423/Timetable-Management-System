@@ -1,45 +1,123 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Timetable</title>
-<link rel="stylesheet" href="/static/style.css">
+<title>Timetable Dashboard</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: #1e293b;
+}
+
+.form {
+    padding: 20px;
+}
+
+input, select {
+    padding: 8px;
+    margin: 5px;
+    width: 200px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    padding: 10px;
+    background: purple;
+    border: none;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    width: 250px;
+}
+
+.card h3 {
+    margin: 0;
+}
+</style>
+
 </head>
 
 <body>
 
 <div class="navbar">
-    <h2>Timetable System</h2>
+    <h2>📅 Timetable</h2>
     <div>
-        <span>{{user}}</span>
-        <a href="/logout">Logout</a>
+        {{user}} |
+        <a href="/logout" style="color:white;">Logout</a>
     </div>
 </div>
 
 {% if role == "admin" %}
 <div class="form">
 <form method="POST" action="/add">
-    <input name="subject" placeholder="Subject" required>
-    <input name="faculty" placeholder="Faculty" required>
-    <input name="day" placeholder="Day" required>
-    <input name="time" placeholder="Time" required>
-    <input name="room" placeholder="Room" required>
-    <button>Add</button>
+
+    <input name="subject" placeholder="📘 Subject" required>
+    <input name="faculty" placeholder="👨‍🏫 Faculty" required>
+    <input name="day" placeholder="📅 Day" required>
+    <input name="time" placeholder="⏰ Time" required>
+    <input name="room" placeholder="🏫 Room" required>
+
+    <input name="department" placeholder="🎓 Department">
+    <input name="section" placeholder="🧑‍🤝‍🧑 Section">
+
+    <select name="type">
+        <option value="Lecture">📊 Lecture</option>
+        <option value="Lab">🧪 Lab</option>
+        <option value="Seminar">🎤 Seminar</option>
+    </select>
+
+    <br><br>
+    <button>Add Class</button>
 </form>
 </div>
 {% endif %}
 
 <div class="container">
+
+{% if timetable|length == 0 %}
+    <h3 style="text-align:center; width:100%;">No Classes Added Yet</h3>
+{% endif %}
+
 {% for c in timetable %}
 <div class="card">
-    <h3>{{c.subject}}</h3>
-    <p>{{c.day}} | {{c.time}}</p>
-    <p>{{c.faculty}} | {{c.room}}</p>
+
+    <h3>📘 {{c.subject}}</h3>
+    <p>👨‍🏫 {{c.faculty}}</p>
+    <p>📅 {{c.day}}</p>
+    <p>⏰ {{c.time}}</p>
+    <p>🏫 Room: {{c.room}}</p>
+    <p>🎓 {{c.department}}</p>
+    <p>🧑‍🤝‍🧑 Section: {{c.section}}</p>
+    <p>📊 {{c.type}}</p>
 
     {% if role == "admin" %}
-    <a href="/delete/{{c.id}}">Delete</a>
+    <a href="/delete/{{c.id}}" style="color:red;">Delete</a>
     {% endif %}
+
 </div>
 {% endfor %}
+
 </div>
 
 </body>
