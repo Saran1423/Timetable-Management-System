@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Timetable</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Timetable System</h2>
+    <div>
+        <span>{{user}}</span>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+{% if role == "admin" %}
+<div class="form">
+<form method="POST" action="/add">
+    <input name="subject" placeholder="Subject" required>
+    <input name="faculty" placeholder="Faculty" required>
+    <input name="day" placeholder="Day" required>
+    <input name="time" placeholder="Time" required>
+    <input name="room" placeholder="Room" required>
+    <button>Add</button>
+</form>
+</div>
+{% endif %}
+
+<div class="container">
+{% for c in timetable %}
+<div class="card">
+    <h3>{{c.subject}}</h3>
+    <p>{{c.day}} | {{c.time}}</p>
+    <p>{{c.faculty}} | {{c.room}}</p>
+
+    {% if role == "admin" %}
+    <a href="/delete/{{c.id}}">Delete</a>
+    {% endif %}
+</div>
+{% endfor %}
+</div>
+
+</body>
+</html>
